@@ -1,5 +1,7 @@
 import bpy
+
 import pyperclip as pc
+
 
 def ProcessClipboard():
     writeFile = open(r'testwritefile.py', 'w')
@@ -14,10 +16,10 @@ def ProcessClipboard():
     lineNumberOfFirstBreak = 0
 
     for i in range(len(b)):
-        currentLine = b[-(i+1)]
+        currentLine = b[-(i + 1)]
         print('line ' + str(i) + ' = ' + str(currentLine))
         if currentLine in ['bpy.ops.text.run_script()', 'bpy.ops.object.editmode_toggle()']:
-            lineNumberOfFirstBreak = i+1
+            lineNumberOfFirstBreak = i + 1
             break
     print(-lineNumberOfFirstBreak)
     print(b[-lineNumberOfFirstBreak])
@@ -29,28 +31,30 @@ def ProcessClipboard():
     writeFile.close()
 
 
-class INFO_OT_CopyFromInfo(bpy.types.Operator): #Declare my class
+class INFO_OT_CopyFromInfo(bpy.types.Operator):  # Declare my class
     """Copy All Entries From Info"""
-    bl_idname = "info.makereplayable" #Create an ID so that Blender can find the class
+    bl_idname = "info.makereplayable"  # Create an ID so that Blender can find the class
     bl_label = "CopyInfoToFile"
 
-    def execute(self, context): #Create an Execute function for my class, used when blender's UI calls it
+    def execute(self, context):  # Create an Execute function for my class, used when blender's UI calls it
+        for window in bpy.context.window_manager.windows:
+            screen = window.screen
+            for area in screen.areas:
+                if area.type == 'INFO':
+                    override = {'window': window, 'screen': screen, 'area': area}
+                    bpy.ops.info.select_all(override, action='SELECT')
+                    bpy.ops.info.report_copy(override)
+                    break
 
-        #Select everything in the info window
-        bpy.ops.info.select_all(action='SELECT')
-
-        #Copy it all to clipboard
-        bpy.ops.info.report_copy()
-
-        #Write what is in the clipboard from the last script run or mode toggle on down
+        # Write what is in the clipboard from the last script run or mode toggle on down
 
         ProcessClipboard()
 
-        #tell Blender we are done
+        # tell Blender we are done
         return {"FINISHED"}
 
 
-#Create register and unregister functions, these allow blender to know where my class is
+# Create register and unregister functions, these allow blender to know where my class is
 
 def register():
     bpy.utils.register_class(INFO_OT_CopyFromInfo)
@@ -62,5 +66,8 @@ def unregister():
 
 if __name__ == '__main__':
     register()
+
+
+
 
 
