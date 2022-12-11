@@ -1,0 +1,36 @@
+In order to run
+import subprocess
+import sys
+import os
+
+python_exe = os.path.join(sys.prefix, 'bin', 'python.exe')
+target = os.path.join(sys.prefix, 'lib', 'site-packages')
+
+subprocess.call([python_exe, '-m', 'ensurepip'])
+subprocess.call([python_exe, '-m', 'pip', 'install', '--upgrade', 'pip'])
+
+subprocess.call([python_exe, '-m', 'pip', 'install', '--upgrade', 'pynput', '-t', target])
+
+print('FINISHED')
+
+
+
+import bpy
+import os
+
+filename = os.path.join("_PATH_", "_FILE_NAME_.py")
+exec(compile(open(filename).read(), filename, 'exec'))
+
+
+
+for this:
+
+import bpy
+import os
+
+filename = os.path.join(r"C:\Users\night\Documents\BlenderAddons\autofill\autofill", r"main.py")
+exec(compile(open(filename).read(), filename, 'exec'))
+
+
+
+
