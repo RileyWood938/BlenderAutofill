@@ -24,9 +24,12 @@ def ProcessClipboard():
     print(-lineNumberOfFirstBreak)
     print(b[-lineNumberOfFirstBreak])
 
-    for i in range(lineNumberOfFirstBreak):
-        if i != 0:
-            writeFile.write('   ' + b[-lineNumberOfFirstBreak + i] + '\n')
+    if lineNumberOfFirstBreak in [0,1]:
+        writeFile.write('   ' + 'pass' + '\n')
+    else:
+        for i in range(lineNumberOfFirstBreak):
+            if i != 0:
+                writeFile.write('   ' + b[-lineNumberOfFirstBreak + i] + '\n')
 
     writeFile.close()
 
